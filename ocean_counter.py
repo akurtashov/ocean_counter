@@ -4,10 +4,12 @@ import json
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from counter_config import *
+from setup import *
 
 
 
 def get_data_from_ftp(ftp_dir, d_start, d_finish):
+    FTP_SERVER, FTP_USER, FTP_PASS = setup()
     with FTP(FTP_SERVER) as ftp:
         ftp.login(FTP_USER, FTP_PASS)
         ftp.cwd(ftp_dir)
@@ -153,36 +155,52 @@ def plot_counts(counts, file_name):
     plt.show()
 
 def first_floor_count():
-    file_counts = get_data_from_ftp(FTP_DIR1, '2019-12-03', '2019-12-21')
+    file_counts = get_data_from_ftp(FTP_DIR1, '2019-12-03', '2019-12-22')
     by_day_counts19 = get_by_day_counts(SENSORS[0], file_counts)
 
-    file_counts = get_data_from_ftp(FTP_DIR1, '2020-12-01', '2020-12-19')
+    file_counts = get_data_from_ftp(FTP_DIR1, '2020-12-01', '2020-12-20')
     by_day_counts20 = get_by_day_counts(SENSORS[0], file_counts)
 
     plot_counts_1_floor(by_day_counts19[2019], by_day_counts20[2020])
 
 def third_floor_count():
-    file_counts = get_data_from_ftp(FTP_DIR2, '2019-01-02', '2019-10-02')
+    file_counts = get_data_from_ftp(FTP_DIR2, '2019-12-03', '2019-12-21')
     by_day_counts19 = get_by_day_counts(SENSORS[2], file_counts)
 
-    file_counts = get_data_from_ftp(FTP_DIR2, '2020-01-01', '2020-09-30')
+    file_counts = get_data_from_ftp(FTP_DIR2, '2020-12-01', '2020-12-19')
     by_day_counts20 = get_by_day_counts(SENSORS[2], file_counts)
 
     plot_counts_1_floor(by_day_counts19[2019], by_day_counts20[2020])
 
 
-def main():
+def read_counts_from_json(file_name):
+    with open(file_name) as json_file:
+        data_json = json.load(json_file)
+    return data_json
+
+
+def write_counts_to_json(data_json,file_name):
+    with open(file_name, 'w') as json_file:
+        string_json = json.dumps(data_json, indent=4)
+        json_file.write(string_json)
+        
+
+def write_counter(file_name):
+    file_counts = get_data_from_ftp(FTP_DIR1, '2020-01-01', '2020-12-18')
+    by_day_counts = get_by_day_counts(SENSORS[0], file_counts)
+    write_counts_to_json(by_day_counts,file_name)
+    
+
+
+def main(): 
+#    write_counter('2020_1st_floor.json')
+
     first_floor_count()
 #    third_floor_count()
 #    init_date = date.today()
 #    i_d = date(init_date.year, init_date.month, 1)
 #    s = str(i_d)
 #    print(s)
-
-def read_counts_from_json(file_name):
-    with open(file_name) as json_file:
-        data_json = json.load(json_file)
-    return data_json
 
 if __name__ == "__main__":
      main()

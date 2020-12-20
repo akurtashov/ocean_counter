@@ -2,9 +2,11 @@ import configparser
 import os
 import argparse
 
+"""
 
+"""
 def setup():
-    parser = argparse.ArgumentParser(description='Setup initial parameter of smart project')
+    parser = argparse.ArgumentParser(description='Setup initial parameter of ocean_counter project')
     parser.add_argument('-c', default='/etc/ocean_counter.conf', type=str, help='config file name')
     
     args = parser.parse_args()
