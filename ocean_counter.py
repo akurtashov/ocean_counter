@@ -155,10 +155,10 @@ def plot_counts(counts, file_name):
     plt.show()
 
 def first_floor_count():
-    file_counts = get_data_from_ftp(FTP_DIR1, '2019-12-03', '2019-12-22')
+    file_counts = get_data_from_ftp(FTP_DIR1, '2019-12-03', '2019-12-27')
     by_day_counts19 = get_by_day_counts(SENSORS[0], file_counts)
 
-    file_counts = get_data_from_ftp(FTP_DIR1, '2020-12-01', '2020-12-20')
+    file_counts = get_data_from_ftp(FTP_DIR1, '2020-12-01', '2020-12-25')
     by_day_counts20 = get_by_day_counts(SENSORS[0], file_counts)
 
     plot_counts_1_floor(by_day_counts19[2019], by_day_counts20[2020])
