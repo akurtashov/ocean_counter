@@ -83,7 +83,7 @@ def plot_counts_1_floor(counts_y_1, counts_y_2):
     fig, ax = plt.subplots()
     ax.grid()
     ax.set_title("Посещаемость ОКЕАН (1 этаж)", fontsize=16)
-    ax.set_xlabel("декабрь", fontsize=14)
+    ax.set_xlabel("январь", fontsize=14)
     ax.set_ylabel("Посетители", fontsize=14)
 
     ax.tick_params(which='major', length=10, width=2)
@@ -112,7 +112,7 @@ def plot_counts_1_floor(counts_y_1, counts_y_2):
 
     ax.plot(x, y1, 'o-', label = '2019')
     #x.append(i+1) #корректриовка на високосный год, если попадает февраль
-    ax.plot(x, y2, 's-', label = '2020')
+    ax.plot(x, y2, 's-', label = '2021')
 
     ax.legend(loc="upper left")
     plt.show()
@@ -155,19 +155,19 @@ def plot_counts(counts, file_name):
     plt.show()
 
 def first_floor_count():
-    file_counts = get_data_from_ftp(FTP_DIR1, '2019-12-03', '2019-12-27')
+    file_counts = get_data_from_ftp(FTP_DIR1, '2019-01-01', '2019-01-08')
     by_day_counts19 = get_by_day_counts(SENSORS[0], file_counts)
 
-    file_counts = get_data_from_ftp(FTP_DIR1, '2020-12-01', '2020-12-25')
+    file_counts = get_data_from_ftp(FTP_DIR1, '2021-01-01', '2021-01-08')
     by_day_counts20 = get_by_day_counts(SENSORS[0], file_counts)
 
-    plot_counts_1_floor(by_day_counts19[2019], by_day_counts20[2020])
+    plot_counts_1_floor(by_day_counts19[2019], by_day_counts20[2021])
 
 def third_floor_count():
-    file_counts = get_data_from_ftp(FTP_DIR2, '2019-12-03', '2019-12-21')
+    file_counts = get_data_from_ftp(FTP_DIR2, '2019-12-01', '2019-12-31')
     by_day_counts19 = get_by_day_counts(SENSORS[2], file_counts)
 
-    file_counts = get_data_from_ftp(FTP_DIR2, '2020-12-01', '2020-12-19')
+    file_counts = get_data_from_ftp(FTP_DIR2, '2020-12-01', '2020-12-31')
     by_day_counts20 = get_by_day_counts(SENSORS[2], file_counts)
 
     plot_counts_1_floor(by_day_counts19[2019], by_day_counts20[2020])
@@ -183,20 +183,20 @@ def write_counts_to_json(data_json,file_name):
     with open(file_name, 'w') as json_file:
         string_json = json.dumps(data_json, indent=4)
         json_file.write(string_json)
-        
+
 
 def write_counter(file_name):
     file_counts = get_data_from_ftp(FTP_DIR1, '2020-01-01', '2020-12-18')
     by_day_counts = get_by_day_counts(SENSORS[0], file_counts)
     write_counts_to_json(by_day_counts,file_name)
-    
 
 
-def main(): 
+
+def main():
 #    write_counter('2020_1st_floor.json')
 
-    first_floor_count()
-#    third_floor_count()
+#    first_floor_count()
+    third_floor_count()
 #    init_date = date.today()
 #    i_d = date(init_date.year, init_date.month, 1)
 #    s = str(i_d)
